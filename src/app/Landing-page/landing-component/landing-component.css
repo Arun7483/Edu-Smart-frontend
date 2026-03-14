@@ -1,0 +1,291 @@
+/* Import a modern, highly readable font for SaaS/EdTech */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* --- Modern CSS Variables --- */
+:host {
+  --primary: #4F46E5; /* Vibrant Indigo */
+  --primary-hover: #4338CA;
+  --primary-light: #EEF2FF;
+  --secondary: #0F172A; /* Deep Slate for high contrast */
+  --accent: #F59E0B; /* Amber for CTAs */
+  --bg-main: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --text-main: #1E293B;
+  --text-muted: #64748B;
+  --border-light: #E2E8F0;
+  
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  color: var(--text-main);
+  background-color: var(--bg-main);
+}
+
+/* --- Hero Section --- */
+.hero-section {
+  background: radial-gradient(circle at top right, var(--primary-light) 0%, var(--bg-main) 60%);
+  padding: 8rem 2rem 6rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 75vh;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.hero-content {
+  max-width: 850px;
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  background-color: var(--bg-card);
+  color: var(--primary);
+  border: 1px solid var(--border-light);
+  border-radius: 50px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.hero-content h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 1.25rem;
+  line-height: 1.1;
+  color: var(--secondary);
+  letter-spacing: -1px;
+}
+
+.brand-text {
+  color: var(--primary);
+  background: linear-gradient(135deg, var(--primary) 0%, #818CF8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-content p {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  margin-bottom: 3rem;
+  line-height: 1.6;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1.25rem;
+  justify-content: center;
+}
+
+/* --- Premium Buttons --- */
+.btn {
+  padding: 0.875rem 1.75rem;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border: none;
+  font-family: inherit;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: white;
+  box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.39);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.23);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.btn-secondary:hover {
+  border-color: #CBD5E1;
+  background-color: #F1F5F9;
+  transform: translateY(-2px);
+}
+
+.btn-accent {
+  background-color: var(--accent);
+  color: white;
+  box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.39);
+}
+
+.btn-accent:hover {
+  background-color: #D97706;
+  transform: translateY(-2px);
+}
+
+/* --- Features Section --- */
+.features-section {
+  padding: 6rem 2rem;
+  background-color: var(--bg-card);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--secondary);
+  margin-bottom: 1rem;
+  letter-spacing: -0.5px;
+}
+
+.section-header p {
+  color: var(--text-muted);
+  font-size: 1.15rem;
+  line-height: 1.6;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature-card {
+  padding: 2.5rem 2rem;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  text-align: left;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--primary-light);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  display: inline-block;
+  padding: 1rem;
+  background-color: var(--primary-light);
+  border-radius: 12px;
+}
+
+.feature-card h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--secondary);
+  margin-bottom: 1rem;
+}
+
+.feature-card p {
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+/* --- CTA Section --- */
+.cta-section {
+  background-color: var(--secondary);
+  background-image: radial-gradient(circle at center, #1E293B 0%, var(--secondary) 100%);
+  color: white;
+  padding: 6rem 2rem;
+  text-align: center;
+}
+
+.cta-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.cta-content h2 {
+  font-size: 2.75rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.5px;
+}
+
+.cta-content p {
+  font-size: 1.15rem;
+  color: #94A3B8;
+  margin-bottom: 2.5rem;
+  line-height: 1.7;
+}
+
+.cta-content strong {
+  color: white;
+  font-weight: 600;
+}
+
+/* --- Footer --- */
+.footer {
+  text-align: center;
+  padding: 2.5rem;
+  background-color: var(--bg-card);
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-light);
+  font-size: 0.95rem;
+}
+
+/* --- Simple Animations --- */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 6rem 1.5rem 4rem;
+  }
+  .hero-content h1 {
+    font-size: 2.75rem;
+  }
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+  }
+  .section-header h2, .cta-content h2 {
+    font-size: 2rem;
+  }
+}

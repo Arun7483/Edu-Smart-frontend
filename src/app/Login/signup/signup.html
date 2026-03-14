@@ -1,0 +1,83 @@
+<div class="auth-container">
+  <div class="auth-card">
+    
+    <div class="auth-header">
+      <a routerLink="/" class="back-link">&larr; Back to Home</a>
+      <h2>Join <span class="brand-text">EduSmart</span></h2>
+      <p>Create your account to start managing your learning journey.</p>
+    </div>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="auth-form">
+      
+      <div class="form-group">
+        <label>I am signing up as a:</label>
+        <div class="role-selector">
+          <label class="role-option" [class.selected]="f['role'].value === 'ADMIN'">
+            <input type="radio" formControlName="role" value="ADMIN">
+            <span>🎓 Admin</span>   
+          </label>
+          <label class="role-option" [class.selected]="f['role'].value === 'INSTRUCTOR'">
+            <input type="radio" formControlName="role" value="INSTRUCTOR">
+            <span>👨‍🏫 Instructor</span>
+          </label>
+        </div>
+        <div *ngIf="(f['role'].touched || isSubmitted) && f['role'].errors" class="error-text">
+          <small *ngIf="f['role'].errors['required']">Please select a role.</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input 
+          type="email" 
+          id="email" 
+          formControlName="email" 
+          placeholder="name@institution.edu"
+          [class.is-invalid]="(f['email'].touched || isSubmitted) && f['email'].errors"
+        >
+        <div *ngIf="(f['email'].touched || isSubmitted) && f['email'].errors" class="error-text">
+          <small *ngIf="f['email'].errors['required']">Email is required.</small>
+          <small *ngIf="f['email'].errors['email']">Please enter a valid email format.</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          formControlName="password" 
+          placeholder="Min. 8 characters"
+          [class.is-invalid]="(f['password'].touched || isSubmitted) && f['password'].errors"
+        >
+        <div *ngIf="(f['password'].touched || isSubmitted) && f['password'].errors" class="error-text">
+          <small *ngIf="f['password'].errors['required']">Password is required.</small>
+          <small *ngIf="f['password'].errors['minlength']">Password must be at least 8 characters.</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input 
+          type="password" 
+          id="confirmPassword" 
+          formControlName="confirmPassword" 
+          placeholder="Re-enter your password"
+          [class.is-invalid]="(f['confirmPassword'].touched || isSubmitted) && f['confirmPassword'].errors"
+        >
+        <div *ngIf="(f['confirmPassword'].touched || isSubmitted) && f['confirmPassword'].errors" class="error-text">
+          <small *ngIf="f['confirmPassword'].errors['required']">Please confirm your password.</small>
+          <small *ngIf="f['confirmPassword'].errors['passwordMismatch']">Passwords do not match.</small>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+      
+    </form>
+
+    <div class="auth-footer">
+      <p>Already have an account? <a routerLink="/login" class="text-link">Log in here</a></p>
+    </div>
+
+  </div>
+</div>

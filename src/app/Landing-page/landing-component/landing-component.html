@@ -1,0 +1,47 @@
+<div class="landing-container">
+  
+  <header class="hero-section">
+    <div class="hero-content">
+      <div class="badge">Next-Gen EdTech Platform</div>
+      <h1>Welcome to <span class="brand-text">EduSmart</span></h1>
+      <p>
+        Your centralized Digital Learning & Assessment Management System. 
+        Empowering schools, colleges, and training institutes to improve learning outcomes.
+      </p>
+      <div class="hero-actions">
+        <button class="btn btn-primary" routerLink="/signup">Get Started</button>
+        <button class="btn btn-secondary" routerLink="/login">Login</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="features-section">
+    <div class="section-header">
+      <h2>Comprehensive Learning Management</h2>
+      <p>Everything you need to manage courses, enrollments, and secure exams.</p>
+    </div>
+    
+    <div class="features-grid">
+      <div class="feature-card" *ngFor="let feature of features">
+        <div class="feature-icon">{{ feature.icon }}</div>
+        <h3>{{ feature.title }}</h3>
+        <p>{{ feature.description }}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Built for Scale & Security</h2>
+      <p>
+        Cloud-deployed architecture designed to support over <strong>100,000 concurrent learners</strong> 
+        with fully encrypted data and compliance with academic integrity standards.
+      </p>
+      <button class="btn btn-accent" routerLink="/admin-demo">Request Institution Demo</button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2026 EduSmart Platform. All rights reserved.</p>
+  </footer>
+</div>
