@@ -1,0 +1,162 @@
+<div class="page-container">
+  
+  <div class="page-header">
+    <div>
+      <h2>Student Roster</h2>
+      <p>Monitor progress, grades, engagement, and daily attendance.</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline-primary" (click)="saveAttendance()">✅ Save Attendance</button>
+      <button class="btn btn-secondary">⬇️ Export CSV</button>
+      <button class="btn btn-primary" (click)="openModal()">➕ Add Student</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" *ngIf="isModalOpen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>{{ isEditing ? 'Edit Student Record' : 'Enroll New Student' }}</h3>
+        <button class="close-btn" (click)="closeModal()">✖</button>
+      </div>
+      
+      <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" class="custom-form">
+        
+        <div class="form-row">
+          <div class="form-group half-width">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" formControlName="name" placeholder="e.g. Jane Doe"
+                   [class.is-invalid]="(f['name'].touched || isSubmitted) && f['name'].errors">
+          </div>
+          <div class="form-group half-width">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" formControlName="email" placeholder="student@edu.com"
+                   [readonly]="isEditing" [class.readonly-input]="isEditing"
+                   [class.is-invalid]="(f['email'].touched || isSubmitted) && f['email'].errors">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half-width">
+            <label for="courseId">Assign Course</label>
+            <select id="courseId" formControlName="courseId" [class.is-invalid]="(f['courseId'].touched || isSubmitted) && f['courseId'].errors">
+              <option value="" disabled>Select a course...</option>
+              <option *ngFor="let course of myCourses" [value]="course.id">{{ course.courseId }} - {{ course.title }}</option>
+            </select>
+          </div>
+          <div class="form-group half-width">
+            <label for="status">Account Status</label>
+            <select id="status" formControlName="status">
+              <option value="ACTIVE">🔵 Active</option>
+              <option value="AT RISK">🔴 At Risk</option>
+              <option value="COMPLETED">🟢 Completed</option>
+              <option value="INACTIVE">⚪ Inactive</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group half-width">
+            <label for="progress">Current Progress (%)</label>
+            <input type="number" id="progress" formControlName="progress" min="0" max="100"
+                   [class.is-invalid]="(f['progress'].touched || isSubmitted) && f['progress'].errors">
+          </div>
+          <div class="form-group half-width">
+            <label for="grade">Current Grade</label>
+            <input type="text" id="grade" formControlName="grade" placeholder="e.g. A, B+, 85%">
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-success">{{ isEditing ? 'Update Student' : 'Enroll Student' }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toolbar-card">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Search students by name or email...">
+    </div>
+    <div class="filter-box">
+      <label for="courseFilter">Filter by Course:</label>
+      <select id="courseFilter" [(ngModel)]="selectedCourse">
+        <option value="ALL">All Courses</option>
+        <option *ngFor="let course of myCourses" [value]="course.id">{{ course.courseId }} - {{ course.title }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Course ID</th>
+          <th>Today's Attendance</th>
+          <th>Progress</th>
+          <th>Status</th>
+          <th class="text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="filteredStudents.length === 0">
+          <td colspan="6" class="empty-state">No students found matching your criteria.</td>
+        </tr>
+
+        <tr *ngFor="let student of filteredStudents">
+          <td>
+            <div class="student-profile">
+              <div class="avatar-circle">{{ getInitials(student.name) }}</div>
+              <div class="student-info">
+                <span class="student-name">{{ student.name }}</span>
+                <span class="student-email">{{ student.email }}</span>
+              </div>
+            </div>
+          </td>
+          <td><span class="course-badge">{{ student.courseCode }}</span></td>
+          
+          <td>
+            <div class="attendance-toggle">
+              <button type="button" class="att-btn present" title="Mark Present"
+                      [class.active]="student.attendance === 'PRESENT'" 
+                      (click)="markAttendance(student, 'PRESENT')">P</button>
+              
+              <button type="button" class="att-btn absent" title="Mark Absent"
+                      [class.active]="student.attendance === 'ABSENT'" 
+                      (click)="markAttendance(student, 'ABSENT')">A</button>
+              
+              <button type="button" class="att-btn late" title="Mark Late"
+                      [class.active]="student.attendance === 'LATE'" 
+                      (click)="markAttendance(student, 'LATE')">L</button>
+            </div>
+          </td>
+
+          <td class="progress-cell">
+            <div class="progress-wrapper">
+              <div class="progress-track">
+                <div class="progress-fill" 
+                     [style.width.%]="student.progress"
+                     [ngClass]="{'fill-success': student.progress === 100, 'fill-warning': student.progress < 50 && student.progress > 0, 'fill-danger': student.progress === 0}">
+                </div>
+              </div>
+              <span class="progress-text">{{ student.progress }}%</span>
+            </div>
+          </td>
+          <td>
+            <span class="status-pill" [ngClass]="{'status-active': student.status === 'ACTIVE', 'status-risk': student.status === 'AT RISK', 'status-completed': student.status === 'COMPLETED', 'status-inactive': student.status === 'INACTIVE'}">
+              {{ student.status }}
+            </span>
+          </td>
+          <td class="text-right">
+            <div class="action-buttons">
+              <button class="btn-icon edit-btn" title="Edit Student" (click)="openModal(student)">✏️</button>
+              <button class="btn-icon delete-btn" title="Remove Student" (click)="deleteStudent(student.enrollmentId)">🗑️</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

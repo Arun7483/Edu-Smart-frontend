@@ -1,0 +1,69 @@
+<div class="page-container">
+  
+  <div class="page-header">
+    <div>
+      <h2>Quizzes & Exams</h2>
+      <p>Test your knowledge and earn credits for your courses.</p>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading assessments...</p>
+  </div>
+
+  <section class="assessment-section" *ngIf="!isLoading">
+    <div class="section-title">
+      <span class="dot warning"></span>
+      <h3>Upcoming Assessments</h3>
+    </div>
+
+    <div class="empty-state" *ngIf="upcomingQuizzes.length === 0">
+      <p>No pending quizzes! You are all caught up.</p>
+    </div>
+
+    <div class="quiz-list">
+      <div class="quiz-card" *ngFor="let quiz of upcomingQuizzes">
+        <div class="quiz-type-icon" [ngClass]="quiz.type === 'EXAM' ? 'exam-bg' : 'quiz-bg'">
+          {{ quiz.type === 'EXAM' ? '🎓' : '📝' }}
+        </div>
+        
+        <div class="quiz-info">
+          <span class="course-tag">{{ quiz.courseCode }}</span>
+          <h4>{{ quiz.title }}</h4>
+          <p>Max Score: {{ quiz.maxScore }} pts</p>
+        </div>
+
+        <div class="quiz-actions">
+          <button class="btn btn-primary" [routerLink]="['../quiz-player', quiz.id]">
+            Start {{ quiz.type }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="assessment-section" *ngIf="!isLoading && completedQuizzes.length > 0">
+    <div class="section-title">
+      <span class="dot success"></span>
+      <h3>Recently Completed</h3>
+    </div>
+
+    <div class="quiz-list">
+      <div class="quiz-card completed" *ngFor="let quiz of completedQuizzes">
+        <div class="quiz-type-icon done-bg">✅</div>
+        
+        <div class="quiz-info">
+          <span class="course-tag">{{ quiz.courseCode }}</span>
+          <h4>{{ quiz.title }}</h4>
+          <p class="score-text">Your Score: <strong>{{ quiz.studentScore }}%</strong></p>
+        </div>
+
+        <div class="quiz-actions">
+          <button class="btn btn-outline" [routerLink]="['../results', quiz.id]">View Feedback</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>

@@ -1,0 +1,134 @@
+<div class="page-container">
+  
+  <div class="page-header">
+    <div>
+      <h2>Course Management</h2>
+      <p>Create, edit, and manage the course catalog and video content.</p>
+    </div>
+    <button class="btn btn-primary" (click)="openModal()">
+      ➕ Create New Course
+    </button>
+  </div>
+
+  <div class="modal-overlay" *ngIf="isModalOpen">
+    <div class="modal-content form-card">
+      <div class="modal-header">
+        <h3>{{ isEditing ? 'Edit Course Details' : 'Create New Course' }}</h3>
+        <button class="close-btn" (click)="closeModal()">✖</button>
+      </div>
+      
+      <form [formGroup]="courseForm" (ngSubmit)="onSubmit()" class="course-form">
+        <div class="form-row">
+          <div class="form-group half-width">
+            <label for="courseId">Course ID</label>
+            <input type="text" id="courseId" formControlName="courseId" placeholder="e.g. ENG-101"
+                   [class.is-invalid]="(f['courseId'].touched || isSubmitted) && f['courseId'].errors">
+          </div>
+          <div class="form-group half-width">
+            <label for="instructorId">Instructor ID</label>
+            <input type="text" id="instructorId" formControlName="instructorId" readonly class="readonly-input">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-grow">
+            <label for="title">Course Title</label>
+            <input type="text" id="title" formControlName="title" placeholder="Enter course title"
+                   [class.is-invalid]="(f['title'].touched || isSubmitted) && f['title'].errors">
+          </div>
+          <div class="form-group third-width">
+            <label for="status">Status</label>
+            <select id="status" formControlName="status" class="status-select">
+              <option value="DRAFT">📝 Draft</option>
+              <option value="PUBLISHED">✅ Published</option>
+              <option value="ARCHIVED">📦 Archived</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Course Description</label>
+          <textarea id="description" formControlName="description" rows="2" placeholder="What will students learn?"
+                    [class.is-invalid]="(f['description'].touched || isSubmitted) && f['description'].errors"></textarea>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="lessons-section">
+          <div class="section-heading">
+            <h4>Course Content (Videos & Links)</h4>
+            <button type="button" class="btn btn-outline-primary btn-sm" (click)="addLesson()">➕ Add Video</button>
+          </div>
+
+          <div formArrayName="lessons">
+            <div class="lesson-block" *ngFor="let lesson of lessons.controls; let i = index" [formGroupName]="i">
+              <div class="lesson-header">
+                <span class="lesson-number">Video {{ i + 1 }}</span>
+                <button type="button" class="btn-icon delete-btn sm-btn" title="Remove Video" (click)="removeLesson(i)">🗑️</button>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group half-width">
+                  <label>Video Title</label>
+                  <input type="text" formControlName="lessonTitle" placeholder="e.g. Chapter 1 Intro"
+                         [class.is-invalid]="(lesson.get('lessonTitle')?.touched || isSubmitted) && lesson.get('lessonTitle')?.errors">
+                </div>
+                <div class="form-group half-width">
+                  <label>Video URL / File Link</label>
+                  <div class="upload-wrapper">
+                    <input type="text" formControlName="videoLink" placeholder="https://..."
+                           [class.is-invalid]="(lesson.get('videoLink')?.touched || isSubmitted) && lesson.get('videoLink')?.errors">
+                    <button type="button" class="btn btn-secondary upload-btn" title="Simulate File Upload">📁</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Video Description / Notes</label>
+                <input type="text" formControlName="lessonDescription" placeholder="Brief description of this video...">
+              </div>
+            </div>
+            
+            <p *ngIf="lessons.length === 0" class="empty-lessons">No videos added yet. Click 'Add Video' to upload content.</p>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-success">{{ isEditing ? 'Update Course' : 'Save Course' }}</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="courses-grid">
+    <div class="course-card" *ngFor="let course of courses">
+      <div class="card-header">
+        <span class="badge" [ngClass]="{
+          'badge-draft': course.status === 'DRAFT',
+          'badge-published': course.status === 'PUBLISHED',
+          'badge-archived': course.status === 'ARCHIVED'
+        }">{{ course.status }}</span>
+        <span class="course-id">{{ course.courseId }}</span>
+      </div>
+      <div class="card-body">
+        <h3 class="course-title">{{ course.title }}</h3>
+        <p class="course-desc">{{ course.description }}</p>
+        
+        <div class="content-meta">
+          <span class="video-count">🎥 {{ course.lessons ? course.lessons.length : 0 }} Videos attached</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <span class="instructor"><small>Instructor:</small> {{ course.instructorId }}</span>
+        
+        <div class="card-actions">
+          <button class="btn-icon edit-btn" title="Edit Course" (click)="openModal(course)">✏️</button>
+          
+          <button class="btn-icon delete-btn" title="Delete Course" (click)="deleteCourse(course.id)">🗑️</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

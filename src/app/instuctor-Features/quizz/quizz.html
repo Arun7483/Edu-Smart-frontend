@@ -1,0 +1,124 @@
+<div class="page-container">
+  
+  <div class="page-header">
+    <div>
+      <h2>Assessment Builder</h2>
+      <p>Draft quizzes, create assignments, and link them to your courses.</p>
+    </div>
+    <div class="header-actions">
+      <div class="mode-toggle">
+        <button type="button" class="toggle-btn" [class.active]="builderMode === 'QUIZ'" (click)="setMode('QUIZ')">
+          📝 Build Quiz
+        </button>
+        <button type="button" class="toggle-btn" [class.active]="builderMode === 'ASSIGNMENT'" (click)="setMode('ASSIGNMENT')">
+          📁 Create Assignment
+        </button>
+      </div>
+
+      <button class="btn btn-primary" (click)="onSubmit()">💾 Save</button>
+    </div>
+  </div>
+
+  <form [formGroup]="quizForm" class="builder-layout">
+    
+    <div class="settings-panel">
+      <div class="settings-card">
+        <h3>Settings</h3>
+        
+        <div class="form-group">
+          <label>Link to Assessment</label>
+          <select formControlName="assessmentId" 
+                  [class.is-invalid]="(f['assessmentId'].touched || isSubmitted) && f['assessmentId'].errors">
+            <option value="" disabled>Select an Assessment...</option>
+            <option *ngFor="let assessment of availableAssessments" [value]="assessment.id">
+              {{ assessment.id }} - {{ assessment.title }}
+            </option>
+          </select>
+          <small class="error-text" *ngIf="(f['assessmentId'].touched || isSubmitted) && f['assessmentId'].errors">
+            Required.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>Passing Score (%)</label>
+          <input type="number" formControlName="passingScore" min="1" max="100"
+                 [class.is-invalid]="(f['passingScore'].touched || isSubmitted) && f['passingScore'].errors">
+        </div>
+
+        <div class="meta-stats" *ngIf="builderMode === 'QUIZ'">
+          <div class="stat-row">
+            <span>Total Questions:</span>
+            <strong>{{ questions.length }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="questions-panel">
+
+      <ng-container *ngIf="builderMode === 'QUIZ'">
+        <div formArrayName="questions">
+          <div class="question-card" *ngFor="let question of questions.controls; let qIndex = index" [formGroupName]="qIndex">
+            
+            <div class="question-header">
+              <h4>Question {{ qIndex + 1 }}</h4>
+              <div class="question-actions">
+                <span class="points-label">Points:</span>
+                <input type="number" formControlName="points" class="points-input" min="1">
+                <button type="button" class="btn-icon delete-btn sm-btn" title="Remove Question" (click)="removeQuestion(qIndex)">🗑️</button>
+              </div>
+            </div>
+
+            <div class="form-group mb-4">
+              <textarea formControlName="questionText" rows="2" placeholder="Type your question here..."
+                        [class.is-invalid]="(question.get('questionText')?.touched || isSubmitted) && question.get('questionText')?.errors"></textarea>
+            </div>
+
+            <div class="options-container" formArrayName="options">
+              <label class="section-label">Answer Choices (Select the correct one)</label>
+              
+              <div class="option-row" *ngFor="let option of getOptions(qIndex).controls; let optIndex = index" [formGroupName]="optIndex">
+                <input type="radio" [name]="'correctOption_' + qIndex" [checked]="question.get('correctOptionIndex')?.value === optIndex" (change)="setCorrectAnswer(qIndex, optIndex)" class="correct-radio">
+                <input type="text" formControlName="optionText" placeholder="Enter option text..." class="option-input"
+                       [class.is-correct-input]="question.get('correctOptionIndex')?.value === optIndex"
+                       [class.is-invalid]="(option.get('optionText')?.touched || isSubmitted) && option.get('optionText')?.errors">
+                <button type="button" class="btn-icon sm-btn delete-btn" (click)="removeOption(qIndex, optIndex)">✖</button>
+              </div>
+              
+              <button type="button" class="btn-text-primary" (click)="addOption(qIndex)" *ngIf="getOptions(qIndex).length < 5">
+                ➕ Add another option
+              </button>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-outline-dashed" (click)="addQuestion()">➕ Add New Question</button>
+      </ng-container>
+
+      <ng-container *ngIf="builderMode === 'ASSIGNMENT'">
+        <div class="question-card">
+          <div class="question-header" style="margin-bottom: 2rem;">
+            <h4>Assignment Details</h4>
+          </div>
+
+          <div class="form-group mb-4">
+            <label>Prompt / Instructions</label>
+            <textarea formControlName="assignmentPrompt" rows="8" placeholder="Describe what the students need to do to complete this assignment..."></textarea>
+            <small class="error-text" *ngIf="isSubmitted && !quizForm.get('assignmentPrompt')?.value">Instructions are required.</small>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group half-width">
+              <label>Submission Format</label>
+              <select formControlName="allowFileUpload">
+                <option [ngValue]="true">Allow File Uploads (PDF, DOCX, etc.)</option>
+                <option [ngValue]="false">Text Entry Only</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+    </div>
+  </form>
+
+</div>

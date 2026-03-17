@@ -1,0 +1,47 @@
+<div class="page-container">
+  <div class="page-header">
+    <h2>My Learning</h2>
+    <p>Continue your educational journey.</p>
+  </div>
+
+  <div *ngIf="isLoading" class="loader-container">
+    <div class="spinner"></div>
+    <p>Loading your courses...</p>
+  </div>
+
+  <div *ngIf="!isLoading && myCourses.length === 0" class="empty-state">
+    <h3>No courses enrolled yet.</h3>
+    <button class="btn-primary" routerLink="/student/catalog">Explore Catalog</button>
+  </div>
+
+  <div *ngIf="!isLoading && myCourses.length > 0" class="course-grid">
+    <div class="course-card" *ngFor="let course of myCourses">
+      <div class="card-header">
+        <span class="course-code">{{ course.courseCode }}</span>
+        <span class="status-badge" [ngClass]="course.progress === 100 ? 'complete' : 'active'">
+          {{ course.progress === 100 ? '🏆 Completed' : '📖 In Progress' }}
+        </span>
+      </div>
+
+      <div class="card-body">
+        <h3 class="course-title">{{ course.courseTitle }}</h3>
+        <p class="instructor-name">Instructor: {{ course.instructorName }}</p>
+      </div>
+
+      <div class="progress-section">
+        <div class="progress-info">
+          <span>Completion</span>
+          <span class="percentage">{{ course.progress }}%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" [style.width.%]="course.progress"></div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <button class="btn-primary" *ngIf="course.progress < 100">Resume Course</button>
+        <button class="btn-success" *ngIf="course.progress === 100">Claim Certificate</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<div class="dashboard-layout" *ngIf="currentUser">
+  
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo admin-logo">ES</div>
+      <h2>Edu<span class="brand-highlight">Smart</span></h2>
+    </div>
+    
+    <div class="role-badge-container">
+      <span class="role-badge admin-badge">System Admin</span>
+    </div>
+    
+    <nav class="nav-menu">
+      <a routerLink="./overview" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">📊</span> System Overview
+      </a>
+      <a routerLink="./user-management" routerLinkActive="active" class="nav-item">
+  <span class="nav-icon">👥</span> User Management
+</a>
+      <a routerLink="./course-catalog" routerLinkActive="active" class="nav-item">
+  <span class="nav-icon">📚</span> Course Catalog
+</a>
+      <a routerLink="./global-reports" routerLinkActive="active" class="nav-item">
+  <span class="nav-icon">📈</span> Global Reports
+</a>
+      
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    
+    <header class="top-header">
+      <div class="page-title">
+        <h1>Admin Control Center</h1>
+      </div>
+      
+      <div class="user-controls">
+        <div class="profile-dropdown-container">
+          <button class="profile-button" (click)="toggleProfileMenu()">
+            <div class="avatar admin-avatar">🛡️</div>
+            <span class="profile-name">Administrator</span>
+            <svg class="chevron" [class.rotated]="isProfileMenuOpen" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+
+          <div class="profile-menu" *ngIf="isProfileMenuOpen">
+            <div class="menu-header">
+              <p class="user-email" title="{{ currentUser.email }}">{{ currentUser.email }}</p>
+              <div class="status-badge online"><span class="status-dot"></span> System OK</div>
+            </div>
+            <div class="menu-divider"></div>
+            <a href="#" class="menu-item"><span>⚙️</span> Platform Settings</a>
+            <div class="menu-divider"></div>
+            <button class="menu-item text-danger" (click)="onLogout()"><span>🚪</span> Logout</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="dynamic-content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+    
+  </main>
+</div>

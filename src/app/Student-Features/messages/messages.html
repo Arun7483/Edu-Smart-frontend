@@ -1,0 +1,64 @@
+<div class="messages-container">
+  
+  <aside class="chat-list">
+    <div class="list-header">
+      <h3>Messages</h3>
+      <button class="new-chat-btn">+</button>
+    </div>
+    <div class="search-chats">
+      <input type="text" placeholder="Search conversations...">
+    </div>
+    <div class="conversation-scroll">
+      <div *ngFor="let chat of conversations" 
+           class="chat-item" 
+           [class.active]="selectedConversation?.id === chat.id"
+           (click)="selectChat(chat)">
+        <div class="chat-avatar">{{ chat.participantName[0] }}</div>
+        <div class="chat-info">
+          <div class="chat-name-row">
+            <span class="chat-name">{{ chat.participantName }}</span>
+            <span class="chat-time">{{ chat.lastMessageTime | date:'shortTime' }}</span>
+          </div>
+          <p class="chat-preview">{{ chat.lastMessage }}</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="chat-window">
+    <ng-container *ngIf="selectedConversation; else noChat">
+      <header class="chat-header">
+        <div class="chat-avatar header-avatar">{{ selectedConversation.participantName[0] }}</div>
+        <div>
+          <h4>{{ selectedConversation.participantName }}</h4>
+          <span class="status-indicator">Online</span>
+        </div>
+      </header>
+
+      <div class="message-history">
+        <div *ngFor="let msg of selectedConversation.messages" 
+             [ngClass]="msg.senderId === currentUser.id ? 'msg-sent' : 'msg-received'" 
+             class="message-bubble">
+          <p>{{ msg.content }}</p>
+          <span class="msg-time">{{ msg.timestamp | date:'shortTime' }}</span>
+        </div>
+      </div>
+
+      <footer class="chat-input-area">
+        <input type="text" 
+               [(ngModel)]="newMessage" 
+               (keyup.enter)="sendMessage()" 
+               placeholder="Write your message...">
+        <button class="send-btn" (click)="sendMessage()">➤</button>
+      </footer>
+    </ng-container>
+
+    <ng-template #noChat>
+      <div class="no-chat-selected">
+        <div class="empty-icon">💬</div>
+        <h3>Your Inbox</h3>
+        <p>Select a conversation to start messaging your instructors or peers.</p>
+      </div>
+    </ng-template>
+  </main>
+</div>

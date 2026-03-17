@@ -1,0 +1,35 @@
+<div class="overview-container" *ngIf="studentName">
+  <h2>Welcome back, {{ studentName }}!</h2>
+
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <span class="value">{{ studentMetrics.coursesInProgress }}</span>
+      <span class="label">In Progress</span>
+    </div>
+    <div class="metric-card">
+      <span class="value">{{ studentMetrics.completedCourses }}</span>
+      <span class="label">Completed</span>
+    </div>
+    <div class="metric-card">
+      <span class="value">{{ studentMetrics.currentAverage }}%</span>
+      <span class="label">Avg Grade</span>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <h3>Your Enrolled Courses</h3>
+  </div>
+  
+  <div class="course-grid">
+    <div *ngFor="let course of enrolledCourses" class="course-card">
+      <div class="course-icon">{{ course.image || '📚' }}</div>
+      <h4>{{ course.title }}</h4>
+      <p>Instructor: {{ course.instructor }}</p>
+      
+      <div class="progress-container">
+        <div class="progress-bar" [style.width.%]="course.progress"></div>
+      </div>
+      <span class="progress-text">{{ course.progress }}% Complete</span>
+    </div>
+  </div>
+</div>

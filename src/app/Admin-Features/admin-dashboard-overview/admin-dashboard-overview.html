@@ -1,0 +1,107 @@
+<div class="overview-container">
+  
+  <div class="welcome-banner">
+    <div class="banner-text">
+      <h2>Platform Overview</h2>
+      <p>System operating normally. Here is the daily summary for EduSmart.</p>
+    </div>
+    <div class="banner-graphic">🌍</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon students">👥</div>
+      <div class="stat-info"><h3>Total Students</h3><p class="stat-number">{{ systemMetrics.totalStudents }}</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon instructors">👨‍🏫</div>
+      <div class="stat-info"><h3>Total Instructors</h3><p class="stat-number">{{ systemMetrics.totalInstructors }}</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon courses">📚</div>
+      <div class="stat-info"><h3>Active Courses</h3><p class="stat-number">{{ systemMetrics.activeCourses }}</p></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon health">⚡</div>
+      <div class="stat-info"><h3>System Health</h3><p class="stat-number">{{ systemMetrics.systemHealth }}</p></div>
+    </div>
+  </div>
+
+  <div class="dashboard-sections">
+    
+    <div class="section-card flex-2">
+      <div class="section-header">
+        <h3>Enrollment Trends (Last 6 Months)</h3>
+      </div>
+      
+      <div class="css-chart">
+        <div class="chart-y-axis">
+          <span>4k</span>
+          <span>3k</span>
+          <span>2k</span>
+          <span>1k</span>
+          <span>0</span>
+        </div>
+        
+        <div class="chart-bars">
+          <div class="bar-group" *ngFor="let data of enrollmentTrends">
+            <div class="bar-tooltip">{{ data.students }} users</div>
+            <div class="bar-track">
+              <div class="bar-fill" [style.height]="data.height"></div>
+            </div>
+            <span class="bar-label">{{ data.month }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card flex-1">
+      <div class="section-header">
+        <h3>Quick Actions</h3>
+      </div>
+      <div class="quick-actions-list">
+        <button class="action-btn">
+          <span class="action-icon">➕</span>
+          <div class="action-text"><strong>Register New User</strong><span>Add student or instructor</span></div>
+        </button>
+        <button class="action-btn">
+          <span class="action-icon">📢</span>
+          <div class="action-text"><strong>Global Announcement</strong><span>Send a message to all users</span></div>
+        </button>
+        <button class="action-btn">
+          <span class="action-icon">💾</span>
+          <div class="action-text"><strong>Trigger Backup</strong><span>Secure database state</span></div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-sections" style="margin-top: 1.5rem;">
+    <div class="section-card full-width">
+      <div class="section-header">
+        <h3>Recent Platform Activity</h3>
+        <button class="btn-text">Refresh 🔄</button>
+      </div>
+      
+      <div class="activity-feed">
+        <div class="activity-item" *ngFor="let activity of recentActivity">
+          <div class="activity-icon" [ngClass]="{
+            'icon-course': activity.type === 'COURSE',
+            'icon-system': activity.type === 'SYSTEM',
+            'icon-user': activity.type === 'USER',
+            'icon-admin': activity.type === 'ADMIN'
+          }"></div>
+          
+          <div class="activity-content">
+            <p class="activity-text">
+              <strong>{{ activity.user }}</strong> {{ activity.action }} 
+              <span class="activity-detail" *ngIf="activity.detail">{{ activity.detail }}</span>
+            </p>
+            <span class="activity-time">{{ activity.time }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

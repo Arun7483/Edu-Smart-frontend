@@ -1,0 +1,71 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h2>Course Catalog</h2>
+      <p>Monitor, approve, and manage all courses created by instructors.</p>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <input type="text" class="search-input" placeholder="Search by course code, title, or instructor..." [(ngModel)]="searchTerm" (input)="applyFilters()">
+    <select class="status-filter" [(ngModel)]="statusFilter" (change)="applyFilters()">
+      <option value="ALL">All Statuses</option>
+      <option value="PENDING">⏳ Needs Approval</option>
+      <option value="PUBLISHED">✅ Published</option>
+      <option value="DRAFT">✏️ Drafts</option>
+      <option value="ARCHIVED">📦 Archived</option>
+    </select>
+  </div>
+
+  <div class="table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Course Code</th>
+          <th>Course Title</th>
+          <th>Instructor</th>
+          <th class="text-center">Enrolled</th>
+          <th>Status</th>
+          <th class="text-right">Admin Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="filteredCourses.length === 0">
+          <td colspan="6" class="empty-state">No courses found matching your criteria.</td>
+        </tr>
+        <tr *ngFor="let course of filteredCourses">
+          <td><span class="code-badge">{{ course.courseCode }}</span></td>
+          <td class="font-bold">{{ course.title }}</td>
+          <td>
+            <div class="instructor-info">
+              <span>{{ course.instructorName }}</span>
+              <small>{{ course.instructorEmail }}</small>
+            </div>
+          </td>
+          <td class="text-center font-bold">{{ course.enrolledStudents }}</td>
+          <td>
+            <span class="badge" [ngClass]="{
+              'badge-success': course.status === 'PUBLISHED',
+              'badge-draft': course.status === 'DRAFT',
+              'badge-warning': course.status === 'PENDING',
+              'badge-archived': course.status === 'ARCHIVED',
+              'badge-danger': course.status === 'REJECTED'
+            }">
+              {{ course.status }}
+            </span>
+          </td>
+          <td class="text-right action-buttons">
+            <select class="action-select" (change)="changeStatus(course, $any($event.target).value)">
+              <option value="" disabled selected>Change Status...</option>
+              <option value="PUBLISHED" *ngIf="course.status !== 'PUBLISHED'">✅ Approve / Publish</option>
+              <option value="REJECTED" *ngIf="course.status !== 'REJECTED' && course.status === 'PENDING'">❌ Reject</option>
+              <option value="DRAFT" *ngIf="course.status !== 'DRAFT'">Revert to Draft</option>
+              <option value="ARCHIVED" *ngIf="course.status !== 'ARCHIVED'">Archive Course</option>
+            </select>
+            <button class="btn-icon delete-btn" title="Delete Course" (click)="deleteCourse(course.id)">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
