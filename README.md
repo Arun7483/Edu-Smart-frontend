@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Edusmart
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.2.
@@ -57,3 +58,6 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+=======
+# Edu-Smart-frontend
+>>>>>>> 1ce1d380ce96a8883bb1d87cbe3faaae31f62373

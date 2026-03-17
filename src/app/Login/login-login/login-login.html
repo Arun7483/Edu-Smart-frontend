@@ -1,1 +1,74 @@
-<p>login-login works!</p>
+<div class="auth-container">
+  <div class="auth-card">
+    
+    <div class="auth-header">
+      <a routerLink="/" class="back-link">&larr; Back to Home</a>
+      <h2>Welcome Back to <span class="brand-text">EduSmart</span></h2>
+      <p>Log in to access your dashboard and courses.</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+      
+      <div class="form-group">
+        <label>Log in as:</label>
+        <div class="role-selector">
+          <label class="role-option" [class.selected]="f['role'].value === 'STUDENT'">
+            <input type="radio" formControlName="role" value="STUDENT">
+            <span>🎓 Student</span>
+          </label>
+          <label class="role-option" [class.selected]="f['role'].value === 'INSTRUCTOR'">
+            <input type="radio" formControlName="role" value="INSTRUCTOR">
+            <span>👨‍🏫 Instructor</span>
+          </label>
+          <label class="role-option" [class.selected]="f['role'].value === 'ADMIN'">
+            <input type="radio" formControlName="role" value="ADMIN">
+            <span>🛡️ Admin</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input 
+          type="email" 
+          id="email" 
+          formControlName="email" 
+          placeholder="name@institution.edu"
+          [class.is-invalid]="(f['email'].touched || isSubmitted) && f['email'].errors"
+        >
+        <div *ngIf="(f['email'].touched || isSubmitted) && f['email'].errors" class="error-text">
+          <small *ngIf="f['email'].errors['required']">Email is required.</small>
+          <small *ngIf="f['email'].errors['email']">Please enter a valid email.</small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="password-header">
+          <label for="password">Password</label>
+          <a href="#" class="forgot-link">Forgot password?</a>
+        </div>
+        <input 
+          type="password" 
+          id="password" 
+          formControlName="password" 
+          placeholder="Enter your password"
+          [class.is-invalid]="(f['password'].touched || isSubmitted) && f['password'].errors"
+        >
+        <div *ngIf="(f['password'].touched || isSubmitted) && f['password'].errors" class="error-text">
+          <small *ngIf="f['password'].errors['required']">Password is required.</small>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Log In</button>
+      
+    </form>
+
+    <div class="auth-footer">
+      <p>Don't have an account? <a routerLink="/signup" class="text-link">Sign up here</a></p>
+    </div>
+
+    <div *ngIf="errorMessage" class="error-text" style="text-align: center; margin-bottom: 1rem; font-weight: 600;">
+      {{ errorMessage }}
+    </div>
+  </div>
+</div>

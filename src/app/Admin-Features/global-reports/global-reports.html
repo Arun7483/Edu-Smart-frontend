@@ -1,0 +1,98 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h2>Global Reports & Analytics</h2>
+      <p>System-wide performance, demographics, and engagement metrics.</p>
+    </div>
+    <button class="btn btn-primary" (click)="exportData()">⬇️ Export Full Report</button>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <p>Loading platform analytics...</p>
+  </div>
+
+  <div *ngIf="!isLoading && reportData" class="dashboard-content">
+    
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-icon bg-blue">📚</div>
+        <div class="kpi-info">
+          <h3>Total Course Enrollments</h3>
+          <p class="kpi-value">{{ reportData.kpis.totalEnrollments }}</p>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon bg-green">📈</div>
+        <div class="kpi-info">
+          <h3>Global Completion Rate</h3>
+          <p class="kpi-value">{{ reportData.kpis.globalCompletionRate }}%</p>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon bg-purple">📝</div>
+        <div class="kpi-info">
+          <h3>Assessments Created</h3>
+          <p class="kpi-value">{{ reportData.kpis.totalAssessments }}</p>
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon bg-orange">🎓</div>
+        <div class="kpi-info">
+          <h3>Total Active Students</h3>
+          <p class="kpi-value">{{ reportData.kpis.activeStudents }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="charts-layout">
+      <div class="panel flex-2">
+        <div class="panel-header">
+          <h3>🏆 Top 5 Most Popular Courses</h3>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Course</th>
+              <th>Instructor</th>
+              <th class="text-right">Total Students</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="reportData.topCourses.length === 0">
+              <td colspan="4" class="text-center">No enrollments yet.</td>
+            </tr>
+            <tr *ngFor="let course of reportData.topCourses; let i = index">
+              <td><span class="rank-badge rank-{{i+1}}">#{{ i + 1 }}</span></td>
+              <td>
+                <span class="course-code">{{ course.courseCode }}</span>
+                <span class="course-title">{{ course.title }}</span>
+              </td>
+              <td>{{ course.instructor }}</td>
+              <td class="text-right font-bold">{{ course.studentCount }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel flex-1">
+        <div class="panel-header">
+          <h3>👥 Platform Demographics</h3>
+        </div>
+        <div class="demographics-list">
+          <div class="demo-item" *ngFor="let demo of reportData.userDemographics">
+            <div class="demo-labels">
+              <strong>{{ demo.role }}s</strong>
+              <span>{{ demo.count }} users</span>
+            </div>
+            <div class="demo-track">
+              <div class="demo-fill" [style.width]="demo.percentage"></div>
+            </div>
+            <span class="demo-percent">{{ demo.percentage }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

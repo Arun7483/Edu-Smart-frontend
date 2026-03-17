@@ -1,0 +1,33 @@
+<section class="dashboard-content">
+  <div class="welcome-banner">
+    <div class="banner-text">
+      <h2>Welcome back, {{ instructorName }}!</h2>
+      <p>Here is what's happening with your courses and students today.</p>
+    </div>
+    <div class="banner-graphic">🚀</div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon courses">📚</div>
+      <div class="stat-info">
+        <h3>Active Courses</h3>
+        <p class="stat-number">{{ metrics.activeCourses }}</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon students">👥</div>
+      <div class="stat-info">
+        <h3>Total Students</h3>
+        <p class="stat-number">{{ metrics.totalStudents }}</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon grades">📝</div>
+      <div class="stat-info">
+        <h3>Pending Grades</h3>
+        <p class="stat-number">{{ metrics.pendingGrades }}</p>
+      </div>
+    </div>
+  </div>
+</section>

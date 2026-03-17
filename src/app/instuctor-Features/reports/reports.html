@@ -1,0 +1,122 @@
+<div class="page-container">
+  
+  <div class="page-header">
+    <div>
+      <h2>Analytics & Reporting</h2>
+      <p>Track student performance, course completion, and academic metrics.</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline-primary" (click)="exportReport('Course Metrics')">
+        📊 Export Course Data
+      </button>
+      <button class="btn btn-primary" (click)="exportReport('Full Academic')">
+        ⬇️ Download Full Report
+      </button>
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon users">👥</div>
+      <div class="kpi-details">
+        <span class="kpi-label">Total Active Students</span>
+        <strong class="kpi-value">{{ overviewMetrics.totalStudents }}</strong>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon completion">📈</div>
+      <div class="kpi-details">
+        <span class="kpi-label">Avg. Completion Rate</span>
+        <strong class="kpi-value">{{ overviewMetrics.avgCompletionRate }}%</strong>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon grade">⭐</div>
+      <div class="kpi-details">
+        <span class="kpi-label">Overall Class Average</span>
+        <strong class="kpi-value">{{ overviewMetrics.overallAvgGrade }}%</strong>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon tasks">📝</div>
+      <div class="kpi-details">
+        <span class="kpi-label">Assessments Graded</span>
+        <strong class="kpi-value">{{ overviewMetrics.assessmentsGraded }}</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="reports-layout">
+    
+    <div class="performance-panel">
+      <div class="panel-header">
+        <h3>Course Performance Breakdown</h3>
+      </div>
+      
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Course</th>
+              <th class="text-center">Enrolled</th>
+              <th>Avg Score</th>
+              <th>Completion Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let course of courseReports">
+              <td>
+                <div class="course-info">
+                  <span class="course-id">{{ course.courseId }}</span>
+                  <span class="course-title">{{ course.title }}</span>
+                </div>
+              </td>
+              <td class="text-center font-bold">{{ course.enrolled }}</td>
+              
+              <td>
+                <span class="score-badge" [ngClass]="getScoreClass(course.avgScore)">
+                  {{ course.avgScore }}%
+                </span>
+              </td>
+
+              <td class="progress-cell">
+                <div class="progress-wrapper">
+                  <div class="progress-track">
+                    <div class="progress-fill" 
+                         [style.width.%]="course.completionRate"
+                         [ngClass]="{'fill-complete': course.completionRate === 100}">
+                    </div>
+                  </div>
+                  <span class="progress-text">{{ course.completionRate }}%</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="insights-panel">
+      <div class="panel-header">
+        <h3>⚠️ Action Required</h3>
+      </div>
+      
+      <p class="insight-desc">The following students are currently at risk of falling behind.</p>
+
+      <div class="risk-list">
+        <div class="risk-card" *ngFor="let student of studentsAtRisk">
+          <div class="risk-header">
+            <strong>{{ student.name }}</strong>
+            <span class="risk-course">{{ student.course }}</span>
+          </div>
+          <div class="risk-body">
+            <span class="risk-issue">{{ student.issue }}</span>
+            <span class="risk-active">Last active: {{ student.lastActive }}</span>
+          </div>
+          <button class="btn btn-sm btn-outline-danger">Message Student</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

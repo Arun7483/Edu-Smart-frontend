@@ -1,0 +1,47 @@
+<div class="quiz-player-container" *ngIf="!isLoading; else loading">
+  <header class="quiz-header">
+    <div class="header-left">
+      <button class="exit-btn" (click)="exitQuiz()">✕</button>
+      <div class="quiz-info">
+        <span class="course-badge">{{ quizData?.courseCode }}</span>
+        <h2>{{ quizData?.title }}</h2>
+      </div>
+    </div>
+  </header>
+
+  <div class="progress-container">
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="((currentQuestionIndex + 1) / quizData.questions.length) * 100"></div>
+    </div>
+    <span class="progress-text">Question {{ currentQuestionIndex + 1 }} of {{ quizData.questions.length }}</span>
+  </div>
+
+  <main class="question-screen">
+    <div class="question-card">
+      <p class="question-text">{{ quizData.questions[currentQuestionIndex].text }}</p>
+
+      <div class="options-grid">
+        <button 
+          *ngFor="let option of quizData.questions[currentQuestionIndex].options"
+          class="option-btn"
+          [class.selected]="selectedAnswers.get(quizData.questions[currentQuestionIndex].id) === option"
+          (click)="selectOption(quizData.questions[currentQuestionIndex].id, option)">
+          <span class="text">{{ option }}</span>
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="quiz-footer">
+    <button class="btn-secondary" (click)="prevQuestion()" [disabled]="currentQuestionIndex === 0">Previous</button>
+    
+    <div class="footer-right">
+      <button *ngIf="currentQuestionIndex < quizData.questions.length - 1" class="btn-primary" (click)="nextQuestion()">Next</button>
+      <button *ngIf="currentQuestionIndex === quizData.questions.length - 1" class="btn-success" (click)="submitQuiz()">Finish & Submit</button>
+    </div>
+  </footer>
+</div>
+
+<ng-template #loading>
+  <div class="loader">Loading Quiz...</div>
+</ng-template>

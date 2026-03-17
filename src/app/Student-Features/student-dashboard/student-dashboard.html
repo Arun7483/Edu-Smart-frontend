@@ -1,0 +1,67 @@
+<div class="dashboard-layout" *ngIf="currentUser">
+  
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo student-logo">ES</div>
+      <h2>Edu<span class="brand-highlight">Smart</span></h2>
+    </div>
+    
+    <div class="role-badge-container">
+      <span class="role-badge student-badge">Student Portal</span>
+    </div>
+    
+    <nav class="nav-menu">
+      <a routerLink="./overview" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">🏠</span> Dashboard
+      </a>
+     <a routerLink="./my-learning" routerLinkActive="active" class="nav-item">
+    <span class="nav-icon">📚</span> My Learning
+  </a>
+      <a routerLink="./quizzes" routerLinkActive="active" class="nav-item">
+    <span class="nav-icon">📝</span> Quizzes & Exams
+  </a>
+      <a routerLink="./grades" routerLinkActive="active" class="nav-item">
+    <span class="nav-icon">🎓</span> Grades & Awards
+  </a>
+      <a routerLink="./messages" routerLinkActive="active" class="nav-item">
+    <span class="nav-icon">💬</span> Messages
+  </a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    
+    <header class="top-header">
+      <div class="page-title">
+        <h1>My Dashboard</h1>
+      </div>
+      
+      <div class="user-controls">
+        <div class="profile-dropdown-container">
+          <button class="profile-button" (click)="toggleProfileMenu()">
+            <div class="avatar student-avatar">🎓</div>
+            <span class="profile-name">{{ currentUser.name || 'Student' }}</span>
+            <svg class="chevron" [class.rotated]="isProfileMenuOpen" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+
+          <div class="profile-menu" *ngIf="isProfileMenuOpen">
+            <div class="menu-header">
+              <p class="user-email" title="{{ currentUser.email }}">{{ currentUser.email }}</p>
+              <div class="status-badge online"><span class="status-dot"></span> Online</div>
+            </div>
+            <div class="menu-divider"></div>
+            <a href="#" class="menu-item"><span>⚙️</span> Account Settings</a>
+            <a href="#" class="menu-item"><span>👤</span> My Profile</a>
+            <div class="menu-divider"></div>
+            <button class="menu-item text-danger" (click)="onLogout()"><span>🚪</span> Logout</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="dynamic-content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+    
+  </main>
+</div>
